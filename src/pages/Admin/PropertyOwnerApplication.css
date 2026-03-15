@@ -1,0 +1,320 @@
+.property-owner-wrapper {
+  padding: 0;
+  display: block;
+}
+
+.property-owner-header {
+  background: #116735;
+  color: white;
+  padding: 18px;
+  font-size: 26px;
+  font-weight: 600;
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+.property-owner-filter {
+  background: #116735;
+  margin-top: 25px;
+  padding: 18px 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.property-owner-filter h3 {
+  margin: 0;
+}
+
+.property-owner-filter-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.property-owner-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.property-owner-btn.active {
+  background: #ef4444;
+  color: white;
+  font-weight: bold;
+}
+
+.property-owner-btn.active:hover {
+  background: green;
+  color: yellow;
+}
+
+.property-owner-btn.outline {
+  background: green;
+  color: white;
+  font-weight: bold;
+}
+
+.property-owner-btn.outline:hover {
+  background: yellow;
+  color: green;
+  font-weight: bold;
+}
+
+/* ===== FILTER BUTTON FIXED COLORS ===== */
+
+.property-owner-btn.pending-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+}
+
+.property-owner-btn.pending-btn:hover {
+  background: white;
+  color: #ef4444;
+  border: 2px solid #ef4444;
+}
+
+.property-owner-btn.approved-btn {
+  background: #116735;
+  color: white;
+  border: none;
+}
+
+.property-owner-btn.approved-btn:hover {
+  background: #116735;
+  color: white;
+}
+
+.property-owner-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 280px));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.property-owner-card {
+  background: #116735;
+  padding: 16px;
+  border-radius: 10px;
+  max-width: 280px;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: white;
+  font-weight: bold;
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  /* ✅ CENTER TEXT */
+  align-items: center;
+  text-align: center;
+}
+
+.card-header h4 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.card-body {
+  font-size: 13px;
+}
+
+.property-owner-card h4 {
+  margin-top: 0;
+}
+
+.property-owner-status {
+  background: #ef4444;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 14px;
+  font-size: 12px;
+  display: inline-block;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.property-owner-description {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.property-owner-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+
+  /* ✅ CENTER BUTTONS */
+  justify-content: center;
+}
+
+.property-owner-actions button {
+  font-size: 12px;
+  padding: 10px;
+  margin: 0;
+}
+
+.property-owner-actions .approve {
+  background: green;
+  border: none;
+  color: white;
+  font-weight: bold;
+}
+
+.property-owner-actions .reject {
+  background: #ef4444;
+  border: none;
+  color: white;
+  font-weight: bold;
+}
+
+.property-owner-actions .details {
+  background: green;
+  border: none;
+  color: white;
+  font-weight: bold;
+}
+
+.property-owner-actions.approved-actions {
+  justify-content: space-between;
+}
+
+.property-owner-actions .delete {
+  background: #ef4444;
+  color: white;
+}
+
+/* ===== CARD BUTTON HOVER EFFECT ===== */
+
+/* APPROVE BUTTON HOVER */
+.property-owner-actions .approve:hover {
+  background: yellow;
+  color: green;
+}
+
+/* REJECT BUTTON HOVER */
+.property-owner-actions .reject:hover {
+  background: green;
+  color: yellow;
+}
+
+/* VIEW DETAILS BUTTON HOVER */
+.property-owner-actions .details:hover {
+  background: yellow;
+  color: green;
+}
+
+/* ===== LAYOUT ===== */
+.property-owner-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f6f8;
+}
+
+/* ===== MAIN ===== */
+.property-owner-main {
+  flex: 1;
+  padding: 25px;
+}
+
+.property-owner-avatar-wrapper {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background-color: #e5e7eb;;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.property-owner-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Camera icon */
+.property-owner-camera {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 26px;
+  height: 26px;
+  background: #116735;
+  border-radius: 50%;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  stroke: white;
+}
+
+.property-owner-camera:hover {
+  background-color: white;
+}
+
+.property-owner-camera:hover svg path,
+.property-owner-camera:hover svg circle {
+  stroke: black;
+}
+
+.property-owner-layout {
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar.hidden ~ .property-owner-main {
+  margin-left: -240px;
+}
+
+.sidebar.hidden ~ .property-owner-main .property-owner-cards {
+  grid-template-columns: repeat(4, 280px);
+}
+
+.details-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.details-card {
+  background: white;
+  color: black;
+  padding: 25px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.details-card .close {
+  margin-top: 20px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+}

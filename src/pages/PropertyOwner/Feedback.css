@@ -1,0 +1,91 @@
+.po-layout {
+  display: flex;
+}
+
+.po-content {
+  flex: 1;
+  padding: 30px;
+  background: #f2f2f2;
+}
+
+.feedback-title {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.feedback-card {
+  background: #116735;
+  padding: 20px;
+  border-radius: 10px;
+  width: 350px;
+  margin-bottom: 0;
+  box-sizing: border-box;
+}
+
+/* Row: profile picture + name side by side */
+.feedback-user-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.feedback-user-row img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.default-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #bbb;
+  flex-shrink: 0;
+}
+
+/* Details below the profile row */
+.feedback-details {
+  color: white;
+}
+
+.feedback-date {
+  font-size: 12px;
+  color: white;
+  margin-top: 0;
+  margin-bottom: 4px;
+}
+
+.stars {
+  color: yellow;
+  margin: 5px 0;
+}
+
+.feedback-text {
+  font-size: 14px;
+  color: white;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.feedback-text.clickable {
+  cursor: pointer;
+}
+
+.po-content {
+  transition: margin-left 0.3s ease;
+}
+
+.full-width {
+  margin-left: 0 !important;
+}
+
+.feedback-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-start;
+}

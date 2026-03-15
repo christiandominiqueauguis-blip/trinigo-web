@@ -1,0 +1,242 @@
+.add-tourist-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f6f8;
+}
+
+.add-tourist-main {
+  flex: 1;
+  padding: 30px;
+  background: #f4f4f4;
+  min-height: 100vh;
+}
+
+.add-tourist-header {
+  background-color: #116735;
+  color: white;
+  padding: 18px;
+  font-size: 26px;
+  font-weight: 600;
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+.add-tourist-card {
+  background: #116735;
+  padding: 40px;
+  border-radius: 10px;
+  width: 600px;
+  margin: auto;
+}
+
+.add-tourist-card h2 {
+  margin-bottom: 50px;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.form-group label {
+  color: white;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select,
+.upload-btn {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+.upload-btn {
+  background: #3d8b3d;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.ok-btn {
+  background: #3d8b3d;
+  color: white;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 5px;
+}
+
+.cancel-btn {
+  background: #3d8b3d;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 5px;
+}
+
+/* SLIDE EFFECT WHEN SIDEBAR HIDDEN */
+.add-tourist-wrapper {
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar.hidden ~ .add-tourist-main {
+  margin-left: -240px;
+}
+
+.error-text {
+  color: #b00020;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* PROFILE IMAGE PREVIEW */
+.ts-image-preview {
+  position: relative;
+  width: 220px;
+  margin-top: 15px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.ts-image-preview img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+/* REMOVE BUTTON */
+.ts-remove-img {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(220, 53, 69, 0.9);
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ts-remove-img:hover {
+  background: rgb(200, 35, 51);
+}
+
+/* MULTIPLE COVER IMAGE PREVIEW */
+.ts-more-preview {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.ts-more-image-box {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.ts-more-image-box img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+/* ENTRANCE FEE GRID */
+.fee-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.fee-item {
+  display: flex;
+  flex-direction: column;
+}
+
+/* BACK ARROW */
+.add-tourist-back {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.add-tourist-back:hover {
+  transform: translateX(-5px);
+  transition: 0.2s ease;
+}
+
+/* MODAL OVERLAY */
+.admin-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* SYSTEM MESSAGE MODAL */
+.system-message-modal {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  width: 320px;
+  text-align: center;
+}
+
+.system-message-modal p {
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.system-message-modal button {
+  background: #116735;
+  color: white;
+  border: none;
+  padding: 6px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.system-message-modal button:hover {
+  background: #0c4f28;
+}

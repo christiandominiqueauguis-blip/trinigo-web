@@ -1,0 +1,78 @@
+.po-dashboard-header {
+  background: #116735;
+  color: white;
+  padding: 25px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  max-width: 650px;
+}
+
+.po-dashboard-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.po-blue-btn {
+  background: #0d47a1;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.po-gray-btn {
+  background: #e0e0e0;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.po-section-title {
+  margin: 30px 0 15px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.po-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.po-stat-card {
+  background: #b2dfdb;
+  padding: 18px;
+  border-radius: 10px;
+}
+
+.po-stat-card h3 {
+  font-size: 24px;
+  margin: 8px 0;
+}
+
+.po-charts-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.po-chart-card {
+  background: #f5f5f5;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+/* HEADER ROW WRAPPER */
+.po-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+}

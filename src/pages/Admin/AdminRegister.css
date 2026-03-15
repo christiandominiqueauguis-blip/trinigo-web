@@ -1,0 +1,140 @@
+.admin-register-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4f4f4;
+}
+
+.admin-register-card {
+  background-color: #116735;
+  width: 360px;
+  padding: 30px 25px;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.admin-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  background-color: transparent;
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+
+.admin-register-title {
+  color: #ffffff;
+  margin-bottom: 25px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.admin-form-group {
+  text-align: left;
+  margin-bottom: 18px;
+}
+
+.admin-form-group label {
+  color: white;
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.admin-form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  box-sizing: border-box; /* ✅ FIX */
+}
+
+.admin-register-btn {
+  width: 100px;
+  padding: 10px 0;
+  background-color: #116735;
+  color: white;
+  border: 2px solid #ffffff;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 25px auto 0;
+  display: block;
+  transition: all 0.25s ease;
+}
+
+.admin-register-btn:hover,
+.admin-register-btn:active {
+  background-color: white;
+  color: #116735;
+  border-color: #0f5f31;
+}
+
+.admin-login-link {
+  color: white;
+  margin-top: 14px;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-login-link a {
+  margin-left: 6px;
+  color: yellow;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.admin-login-link a:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.admin-password-wrapper {
+  position: relative;
+}
+
+.admin-password-wrapper input {
+  padding-right: 40px;
+}
+
+.admin-eye-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #116735;
+  display: flex;
+  align-items: center;
+}
+
+.admin-eye-icon:hover {
+  color: #000;
+}
+
+.error-text {
+  color: yellow;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+/* 🔒 REMOVE BROWSER DEFAULT PASSWORD EYE (Chrome / Edge / Safari) */
+.admin-password-wrapper input[type="password"]::-ms-reveal,
+.admin-password-wrapper input[type="password"]::-ms-clear {
+  display: none;
+}
+
+/* 🔒 Chrome / Edge (WebKit) */
+.admin-password-wrapper input[type="password"]::-webkit-textfield-decoration-container {
+  display: none;
+}

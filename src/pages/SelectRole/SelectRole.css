@@ -1,0 +1,35 @@
+.select-role-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f2f2f2;
+}
+
+.select-role-card {
+  width: 420px;
+  height: 520px;
+  background-color: #116735;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 70px;
+}
+
+.logo {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 140px;
+}
+
+.role-dropdown {
+  width: 240px;
+  padding: 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+}

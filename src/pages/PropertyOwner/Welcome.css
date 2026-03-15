@@ -1,0 +1,83 @@
+.po-dashboard-wrapper {
+  display: flex;
+  height: 100vh;
+  background-color: #f5f6fa;
+}
+
+/* SIDEBAR */
+.po-sidebar {
+  width: 230px;
+  background-color: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding: 20px;
+}
+
+.po-logo {
+  color: #16a34a;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.po-menu {
+  list-style: none;
+  padding: 0;
+}
+
+.po-menu li {
+  padding: 10px;
+  font-size: 14px;
+  color: #6b7280;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.po-menu li.active,
+.po-menu li:hover {
+  background-color: #f0fdf4;
+  color: #16a34a;
+}
+
+/* MAIN CONTENT */
+.po-main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* WELCOME CARD */
+.po-welcome-card {
+  background-color: #116735;
+  color: white;
+  width: 70%;
+  max-width: 800px;
+  padding: 50px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.po-welcome-card h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.po-welcome-card p {
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+/* BUTTON */
+.po-create-btn {
+  background-color: green;
+  color: white;
+  border: 2px solid yellow;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.po-create-btn:hover {
+  background-color: yellow;
+  border: 2px solid #ef4444;
+}

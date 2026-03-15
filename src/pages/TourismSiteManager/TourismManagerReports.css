@@ -1,0 +1,19 @@
+.tm-spot-select-wrapper {
+  margin-bottom: 16px;
+}
+
+.tm-spot-select {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid #b2dfdb;
+  font-size: 14px;
+  min-width: 260px;
+  background: white;
+  color: #333;
+  cursor: pointer;
+}
+
+.tm-spot-select:focus {
+  outline: none;
+  border-color: #116735;
+}

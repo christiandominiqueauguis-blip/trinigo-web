@@ -1,0 +1,105 @@
+.tourist-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f6f8;
+}
+
+/* MAIN CONTENT */
+.tourist-main {
+  flex: 1;
+  padding: 25px;
+}
+
+/* HEADER */
+.tourist-header {
+  background-color: #116735;
+  color: white;
+  padding: 18px;
+  font-size: 26px;
+  font-weight: 600;
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+/* ADD BUTTON */
+.tourist-add-btn {
+  margin-top: 25px;
+  background: #116735;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.tourist-add-btn:hover {
+  opacity: 0.9;
+  border: 2px solid #116735;
+}
+
+/* SLIDE EFFECT WHEN SIDEBAR HIDDEN */
+.tourist-wrapper {
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar.hidden ~ .tourist-main {
+  margin-left: -240px;
+}
+
+/* CARD CONTAINER */
+.tourist-card-container {
+  margin-top: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* CARD */
+.tourist-card {
+  width: 300px;
+  background: #116735;
+  border-radius: 10px;
+  padding: 15px;
+  position: relative;
+}
+
+/* IMAGE */
+.tourist-image img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* INFO */
+.tourist-info {
+  margin-top: 10px;
+  padding-bottom: 10px;
+}
+
+.tourist-info h3 {
+  color: white;
+  font-size: 18px;
+  margin: 0;
+}
+
+.tourist-info p {
+  font-size: 14px;
+  color: yellow;
+  margin-top: 5px;
+}
+
+/* STATUS BADGE */
+.status-badge {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background: #3d8b3d;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+}

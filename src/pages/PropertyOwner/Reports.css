@@ -1,0 +1,292 @@
+.po-dashboard-container {
+  display: flex;
+}
+
+.po-dashboard-main {
+  flex: 1;
+  padding: 30px;
+  transition: all 0.3s ease;
+}
+
+.po-dashboard-main.expanded {
+  margin-left: 0;
+}
+
+/* HEADER */
+.po-report-header {
+  background: #116735;
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+  margin-bottom: 30px;
+}
+
+.po-report-header h1 {
+  font-size: 25px;
+  margin: 0;
+}
+
+/* UPLOAD BOX */
+.po-report-upload-box {
+  background: #e6f2ec;
+  border: 2px dashed #b2dfdb;
+  padding: 40px;
+  text-align: center;
+  border-radius: 10px;
+  margin-bottom: 40px;
+}
+
+.upload-icon {
+  margin-bottom: 15px;
+}
+
+.po-report-upload-box h3 {
+  margin-bottom: 10px;
+}
+
+.po-report-upload-box p {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.upload-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.upload-btn,
+.submit-btn {
+  padding: 10px 30px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background: #116735;
+  color: white;
+  width: auto;
+  min-width: 140px;
+  display: inline-block;
+  text-align: center;
+}
+
+/* RECENT UPLOADS */
+.po-recent-uploads h3 {
+  margin-bottom: 15px;
+}
+
+.recent-header {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  margin-bottom: 15px;
+}
+
+.file-total-badge {
+  background: #e0e0e0;
+  color: #333;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+.upload-item {
+  display: flex;
+  align-items: center;
+  background: #f8f8f8;
+  padding: 15px;
+  border-radius: 8px;
+  border: 2px solid #116735;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.file-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  margin-right: 15px;
+}
+
+.file-icon.pdf {
+  background: #e53935;
+}
+
+.file-icon.doc {
+  background: #1e88e5;
+}
+
+.file-info p {
+  margin: 0;
+  font-weight: 600;
+}
+
+.file-info span {
+  font-size: 13px;
+  color: #777;
+}
+
+/* SELECTED FILES PREVIEW */
+.selected-files {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.selected-file-item {
+  position: relative;
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.file-preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.file-name {
+  text-align: center;
+  word-break: break-word;
+  font-size: 12px;
+}
+
+.remove-file {
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  background: #ff4d4d;
+  color: white;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* REAL ICON CONTAINER */
+.file-icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* IMAGE THUMBNAIL SA RECENT */
+.recent-image-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* DELETE BUTTON SA RECENT */
+.delete-recent {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  background: #ff4d4d;
+  color: white;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.menu-dots {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  display: none;
+  cursor: pointer;
+}
+
+.upload-item:hover .menu-dots {
+  display: block;
+}
+
+.delete-modal {
+  position: absolute;
+  top: 35px;
+  right: 10px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 10;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.cancel-btn {
+  background: #116735;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.confirm-delete-btn {
+  background: #e53935;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+/* REPORT STATUS BADGE */
+.report-status-badge {
+  position: absolute;
+  right: 45px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.status-pending {
+  background-color: #ff9800;
+  color: white;
+}
+
+.status-confirmed {
+  background-color: #116735;
+  color: white;
+}
