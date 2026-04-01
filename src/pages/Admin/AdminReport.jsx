@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import Pagination from "../../components/Pagination";
 import Sidebar from "../../components/Sidebar";
 import "./AdminReport.css";
 import MenuButton from "../../components/MenuButton";
 import { API_URL } from "../../config/api";
+import usePagination from "../../hooks/usePagination";
 
 export default function AdminReport() {
   const [isSidebarHidden, setIsSidebarHidden] = useState(false);
@@ -70,6 +72,14 @@ export default function AdminReport() {
         setTouristSpotReports(Object.values(grouped));
       });
   }, []);
+  const accommodationPagination = usePagination(reports, {
+    initialPageSize: 6,
+    resetKey: activeTab,
+  });
+  const touristSpotPagination = usePagination(touristSpotReports, {
+    initialPageSize: 6,
+    resetKey: activeTab,
+  });
 
   return (
     <div className="admin-report-container">
@@ -83,14 +93,7 @@ export default function AdminReport() {
         <MenuButton onClick={() => setIsSidebarHidden(false)} />
       )}
 
-      <main
-        className="admin-report-main"
-        onClick={() => {
-          if (!isSidebarHidden) {
-            setIsSidebarHidden(true);
-          }
-        }}
-      >
+      <main className="admin-report-main">
         <div className="admin-report-header">Report</div>
 
         <div className="admin-report-tabs">
@@ -135,7 +138,7 @@ export default function AdminReport() {
                     </tr>
                   )}
 
-                  {reports.map((report) => {
+                  {accommodationPagination.paginatedItems.map((report) => {
                     const formattedDate = new Date(
                       report.createdAt
                     ).toLocaleDateString("en-US");
@@ -171,6 +174,16 @@ export default function AdminReport() {
                 </tbody>
               </table>
             </div>
+
+            <Pagination
+              currentPage={accommodationPagination.currentPage}
+              itemLabel="reports"
+              onPageChange={accommodationPagination.setCurrentPage}
+              onPageSizeChange={accommodationPagination.setPageSize}
+              pageSize={accommodationPagination.pageSize}
+              totalItems={accommodationPagination.totalItems}
+              totalPages={accommodationPagination.totalPages}
+            />
           </div>
         )}
 
@@ -200,7 +213,7 @@ export default function AdminReport() {
                     </tr>
                   )}
 
-                  {touristSpotReports.map((report) => {
+                  {touristSpotPagination.paginatedItems.map((report) => {
                     const formattedDate = new Date(
                       report.createdAt
                     ).toLocaleDateString("en-US");
@@ -235,6 +248,16 @@ export default function AdminReport() {
                 </tbody>
               </table>
             </div>
+
+            <Pagination
+              currentPage={touristSpotPagination.currentPage}
+              itemLabel="reports"
+              onPageChange={touristSpotPagination.setCurrentPage}
+              onPageSizeChange={touristSpotPagination.setPageSize}
+              pageSize={touristSpotPagination.pageSize}
+              totalItems={touristSpotPagination.totalItems}
+              totalPages={touristSpotPagination.totalPages}
+            />
           </div>
         )}
       </main>

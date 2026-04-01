@@ -3,7 +3,7 @@ import Sidebar from "../../components/Sidebar";
 import MenuButton from "../../components/MenuButton";
 import "./AddTouristSpot.css";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL, API_URL } from "../../config/api";
+import { API_URL } from "../../config/api";
 
 export default function AddTouristSpot() {
 const [isSidebarHidden, setIsSidebarHidden] = useState(false);
@@ -251,14 +251,7 @@ const handleCoverUpload = (e) => {
         <MenuButton onClick={() => setIsSidebarHidden(false)} />
       )}
 
-      <main
-        className="add-tourist-main"
-        onClick={() => {
-          if (!isSidebarHidden) {
-            setIsSidebarHidden(true);
-          }
-        }}
-      >
+      <main className="add-tourist-main">
         {/* HEADER */}
 <div className="add-tourist-header">Add Tourist Spot</div>
 
@@ -489,7 +482,7 @@ const handleCoverUpload = (e) => {
   type="button" 
   onClick={handleDelete}
 >
-  Delete
+  Clear
 </button>
             <button className="ok-btn" onClick={handleSubmit}>
   OK

@@ -1,129 +1,226 @@
-import { useState } from "react";
-import "../styles/Sidebar.css";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "../styles/Sidebar.css";
+import { API_URL } from "../config/api";
+import { buildAuthHeaders, clearRoleSession } from "../features/auth/roleSession";
 
-export default function Sidebar({ active, isHidden, setIsHidden }) {
+function getStoredAdminProfile() {
+  return {
+    id: localStorage.getItem("adminId") || "",
+    fullName: localStorage.getItem("fullName") || "Administrator",
+    profileImage: localStorage.getItem("adminProfileImage") || "",
+    token: localStorage.getItem("adminAuthToken") || "",
+  };
+}
+
+export default function Sidebar({ active, isHidden, setIsHidden, disabled = false }) {
   const navigate = useNavigate();
-  const [profileImage, setProfileImage] = useState(
-  localStorage.getItem("adminProfileImage")
-);
+  const [adminProfile, setAdminProfile] = useState(getStoredAdminProfile());
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  useEffect(() => {
+    const syncProfile = () => setAdminProfile(getStoredAdminProfile());
+    syncProfile();
+    window.addEventListener("storage", syncProfile);
+    return () => window.removeEventListener("storage", syncProfile);
+  }, []);
+
+  useEffect(() => {
+    const adminId = localStorage.getItem("adminId");
+    if (!adminId) return;
+
+    fetch(`${API_URL}/admin/${adminId}`, {
+      headers: buildAuthHeaders("admin"),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data) return;
+
+        const nextProfile = {
+          id: String(data._id || data.id || adminId),
+          fullName: data.fullName || "Administrator",
+          profileImage: data.profileImage || localStorage.getItem("adminProfileImage") || "",
+        };
+
+        localStorage.setItem("fullName", nextProfile.fullName);
+        if (nextProfile.profileImage) {
+          localStorage.setItem("adminProfileImage", nextProfile.profileImage);
+        }
+
+        setAdminProfile(nextProfile);
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleLogout = () => {
+    clearRoleSession("admin");
+    navigate("/");
+  };
+
+  const profileImage = adminProfile.profileImage;
 
   return (
-    <aside className={`sidebar ${isHidden ? "hidden" : ""}`}>
+    <>
+      <aside className={`sidebar ${disabled ? "sidebar-disabled" : ""} ${isHidden ? "hidden" : ""}`}>
+        {setIsHidden ? (
+          <button
+            className="sidebar-close-btn"
+            onClick={() => setIsHidden(true)}
+            aria-label="Close sidebar"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        ) : null}
 
-      <h2 className="sidebar-logo">TriniGo</h2>
+        <div className="sidebar-scroll">
+          <div className="sidebar-top">
+            <h2 className="sidebar-logo">TriniGo</h2>
+          </div>
 
-      <div className="sidebar-profile">
-        <div className="sidebar-avatar-wrapper">
-          {profileImage ? (
-            <img
-              src={profileImage}
-              alt="Profile"
-              className="sidebar-avatar-img"
-            />
-          ) : (
-            <div className="sidebar-default-avatar">
-              <svg
-                width="48"
-                height="48"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <circle cx="12" cy="8" r="4" fill="#777" />
+          <div className="sidebar-profile-card">
+            <div className="sidebar-avatar-wrapper">
+              {profileImage ? (
+                <img
+                  src={profileImage}
+                  alt="Admin profile"
+                  className="sidebar-avatar-img"
+                  onError={() => {
+                    localStorage.removeItem("adminProfileImage");
+                    setAdminProfile((current) => ({ ...current, profileImage: "" }));
+                  }}
+                />
+              ) : (
+                <div className="sidebar-default-avatar">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="8" r="4" fill="#777" />
+                    <path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="#777" />
+                  </svg>
+                </div>
+              )}
+            </div>
+
+            <div className="sidebar-profile-copy">
+              <p className="sidebar-name">{adminProfile.fullName}</p>
+              <span className="sidebar-role">Administrator</span>
+            </div>
+          </div>
+
+          <nav className="sidebar-nav">
+            <Link to="/admin/dashboard" className={active === "dashboard" ? "active" : ""}>
+              <span className="sidebar-nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="7" height="7" rx="1" />
+                  <rect x="14" y="3" width="7" height="7" rx="1" />
+                  <rect x="14" y="14" width="7" height="7" rx="1" />
+                  <rect x="3" y="14" width="7" height="7" rx="1" />
+                </svg>
+              </span>
+              Dashboard
+            </Link>
+
+            <p className="sidebar-nav-label">Management</p>
+
+            <Link to="/admin/tourist-spots" className={active === "tourist-spots" ? "active" : ""}>
+              <span className="sidebar-nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2l4 7h-8l4-7z" />
+                  <path d="M5 10l4 12H1L5 10z" />
+                  <path d="M19 10l4 12h-8l4-12z" />
+                </svg>
+              </span>
+              Tourist Spots
+            </Link>
+
+            <Link to="/admin/accommodations" className={active === "accommodations" ? "active" : ""}>
+              <span className="sidebar-nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                  <polyline points="9,22 9,12 15,12 15,22" />
+                </svg>
+              </span>
+              Accommodations
+            </Link>
+
+            <Link to="/admin/property-owner-application" className={active === "property" ? "active" : ""}>
+              <span className="sidebar-nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21a8 8 0 0 0-16 0" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </span>
+              Establishment Application
+            </Link>
+
+            <Link to="/admin/user-management" className={active === "user-management" ? "active" : ""}>
+              <span className="sidebar-nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </span>
+              User Management
+            </Link>
+
+            <p className="sidebar-nav-label">Insights</p>
+
+            <Link to="/admin/feedback" className={active === "feedback" ? "active" : ""}>
+              <span className="sidebar-nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+              </span>
+              Feedback
+            </Link>
+
+            <Link to="/admin/report" className={active === "report" ? "active" : ""}>
+              <span className="sidebar-nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="20" x2="18" y2="10" />
+                  <line x1="12" y1="20" x2="12" y2="4" />
+                  <line x1="6" y1="20" x2="6" y2="14" />
+                </svg>
+              </span>
+              Reports
+            </Link>
+          </nav>
+        </div>
+
+        <button className="sidebar-logout" onClick={() => setShowLogoutModal(true)}>
+          Log out
+        </button>
+      </aside>
+
+      {showLogoutModal ? (
+        <div className="logout-overlay" onClick={() => setShowLogoutModal(false)}>
+          <div className="logout-modal" onClick={(event) => event.stopPropagation()}>
+            <div className="logout-modal-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
                 <path
-                  d="M4 20c0-4 4-6 8-6s8 2 8 6"
-                  fill="#777"
+                  d="M16 17l5-5-5-5M21 12H9M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2"
+                  stroke="#dc2626"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             </div>
-          )}
-
-          <label htmlFor="sidebarUpload" className="sidebar-camera">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-  d="M9 4L7.5 6H5a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3h-2.5L15 4H9z"
-  stroke="white"
-  strokeWidth="1.5"
-/>
-<circle
-  cx="12"
-  cy="13"
-  r="3"
-  stroke="white"
-  strokeWidth="1.5"
-/>
-            </svg>
-          </label>
-
-          <input
-            type="file"
-            id="sidebarUpload"
-            accept="image/*"
-            hidden
-            onChange={(e) => {
-  const file = e.target.files[0];
-  if (file) {
-    const imageURL = URL.createObjectURL(file);
-
-    setProfileImage(imageURL);
-    localStorage.setItem("adminProfileImage", imageURL);
-  }
-}}
-          />
+            <h3 className="logout-modal-title">Log out?</h3>
+            <p className="logout-modal-message">Are you sure you want to log out of your account?</p>
+            <div className="logout-modal-actions">
+              <button className="logout-cancel-btn" onClick={() => setShowLogoutModal(false)}>
+                Cancel
+              </button>
+              <button className="logout-confirm-btn" onClick={handleLogout}>
+                Log out
+              </button>
+            </div>
+          </div>
         </div>
-
-        <p className="sidebar-name">
-  {localStorage.getItem("adminFullName") || ""}
-</p>
-        <span className="sidebar-role">Tourism Officer</span>
-      </div>
-
-      <nav className="sidebar-nav">
-        <Link
-  to="/admin/dashboard"
-  className={active === "dashboard" ? "active" : ""}
->
-  Dashboard
-</Link>
-        <Link
-  to="/admin/tourist-spots"
-  className={active === "tourist-spots" ? "active" : ""}
->
-  Tourist Spots
-</Link>
-        <Link
-  to="/admin/property-owner-application"
-  className={active === "property" ? "active" : ""}
->
-  Property Owner Application
-</Link>
-        <Link
-  to="/admin/feedback"
-  className={active === "feedback" ? "active" : ""}
->
-  Feedback
-</Link>
-        <Link
-  to="/admin/report"
-  className={active === "report" ? "active" : ""}
->
-  Report
-</Link>
-      </nav>
-
-      <button
-  className="sidebar-logout"
-  onClick={() => {
-    navigate("/admin/login");
-  }}
->
-  Log out
-</button>
-    </aside>
+      ) : null}
+    </>
   );
 }

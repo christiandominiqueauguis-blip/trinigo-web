@@ -9,15 +9,15 @@ export default function SelectRole() {
     const role = e.target.value;
 
     if (role === "property-owner") {
-      navigate("/property-owner/register");
+      navigate("/property-owner/login");
     }
 
     if (role === "admin") {
-      navigate("/admin/register");
+      navigate("/admin/login");
     }
 
     if (role === "tourism-site-manager") {
-      navigate("/tourism-site-manager/register");
+      navigate("/tourism-site-manager/login");
     }
   };
 
@@ -33,7 +33,7 @@ export default function SelectRole() {
         <select className="role-dropdown" onChange={handleChange}>
           <option value="">Select Your Role</option>
           <option value="admin">Admin / Tourism Officer</option>
-          <option value="property-owner">Property Owner</option>
+          <option value="property-owner">Establishment Owner</option>
           <option value="tourism-site-manager">Tourism Site Manager</option>
         </select>
       </div>

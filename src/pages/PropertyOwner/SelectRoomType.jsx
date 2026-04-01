@@ -1,471 +1,493 @@
+import "./CreateAccommodation.css";
 import "./SelectRoomType.css";
 import PropertyOwnerSidebar from "../../components/PropertyOwnerSidebar";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingModal from "../../components/LoadingModal";
-import MessageModal from "../../components/MessageModal";
 import MenuButton from "../../components/MenuButton";
+import { API_URL } from "../../config/api";
+import AccommodationStatusBadge from "../../features/accommodations/AccommodationStatusBadge";
+import {
+  ACTIVITIES_LIST,
+  AMENITIES_LIST,
+  buildPricedSelections,
+  MAX_PERSONS_OPTIONS,
+  ROOM_TYPES,
+  TRINIDAD_DESTINATION,
+  clearAccommodationDraft,
+  getMissingPriceSelections,
+  getPricedSelectionsPayload,
+  getSelectedPricingKeys,
+  getStatusMeta,
+  readAccommodationDraft,
+  saveAccommodationRoomDraft,
+} from "../../features/accommodations/accommodationHelpers";
 
-function RoomForm({
-  roomName,
-  maxOptions,
-  selectedRooms,
-  handleRoomImageChange,
-  roomImages,
-  fileInputRefs,
-  setRoomImages,
-  formRef,
-  roomData,
-  errors,
-  handleRoomInputChange,
-}) {
+/* ── Toast ── */
+function useToast() {
+  const [toasts, setToasts] = useState([]);
+  const addToast = useCallback((msg, type = "error") => {
+    const id = Date.now() + Math.random();
+    setToasts((p) => [...p, { id, msg, type }]);
+    setTimeout(() => setToasts((p) => p.filter((t) => t.id !== id)), 3000);
+  }, []);
+  return { toasts, addToast };
+}
+
+function ToastStack({ toasts }) {
+  return (
+    <div className="srt-toast-stack">
+      {toasts.map((t) => (
+        <div key={t.id} className={`srt-toast srt-toast--${t.type}`}>
+          {t.type === "error" ? (
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          ) : (
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/>
+            </svg>
+          )}
+          {t.msg}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function RoomForm({ roomName, selectedRooms, roomData, roomImages, errors, fileInputRefs, setRoomImages, handleRoomInputChange }) {
   if (!selectedRooms.includes(roomName)) return null;
 
   return (
-    <div className="po-room-form slide-down" ref={formRef}>
-      <h3>{roomName}</h3>
+    <div className="srt-room-form slide-down">
+      <div className="srt-room-form-title">
+        <span className="srt-room-badge">{roomName}</span>
+      </div>
 
-      <div className="po-room-inputs">
-        <div>
-          <label>Room Price (₱)</label>
+      <div className="srt-room-inputs">
+        <div className="srt-field">
+          <label className="srt-label">Price per Night (₱) <span className="srt-req">*</span></label>
           <input
+            className={`srt-input ${errors?.[roomName]?.price ? "srt-input--err" : ""}`}
             type="number"
+            min="0"
+            placeholder="0.00"
             value={roomData?.[roomName]?.price || ""}
-            onChange={(e) =>
-              handleRoomInputChange(roomName, "price", e.target.value)
-            }
+            onChange={(e) => handleRoomInputChange(roomName, "price", e.target.value)}
           />
-          {errors?.[roomName]?.price && (
-            <small className="po-error">{errors[roomName].price}</small>
-          )}
+          {errors?.[roomName]?.price && <small className="srt-err-msg">{errors[roomName].price}</small>}
         </div>
 
-        <div>
-          <label>Available Room</label>
+        <div className="srt-field">
+          <label className="srt-label">Available Rooms <span className="srt-req">*</span></label>
           <input
+            className={`srt-input ${errors?.[roomName]?.availableRooms ? "srt-input--err" : ""}`}
             type="number"
+            min="1"
+            placeholder="1"
             value={roomData?.[roomName]?.availableRooms || ""}
-            onChange={(e) =>
-              handleRoomInputChange(roomName, "availableRooms", e.target.value)
-            }
+            onChange={(e) => handleRoomInputChange(roomName, "availableRooms", e.target.value)}
           />
-          {errors?.[roomName]?.availableRooms && (
-            <small className="po-error">
-              {errors[roomName].availableRooms}
-            </small>
-          )}
+          {errors?.[roomName]?.availableRooms && <small className="srt-err-msg">{errors[roomName].availableRooms}</small>}
         </div>
 
-        <div>
-          <label>Max Persons</label>
+        <div className="srt-field">
+          <label className="srt-label">Max Persons <span className="srt-req">*</span></label>
           <select
+            className={`srt-input ${errors?.[roomName]?.maxPersons ? "srt-input--err" : ""}`}
             value={roomData?.[roomName]?.maxPersons || ""}
-            onChange={(e) =>
-              handleRoomInputChange(roomName, "maxPersons", e.target.value)
-            }
+            onChange={(e) => handleRoomInputChange(roomName, "maxPersons", e.target.value)}
           >
             <option value="">Select</option>
-            {maxOptions.map((num) => (
-              <option key={num}>{num}</option>
-            ))}
+            {MAX_PERSONS_OPTIONS.map((n) => <option key={n}>{n}</option>)}
           </select>
-          {errors?.[roomName]?.maxPersons && (
-            <small className="po-error">{errors[roomName].maxPersons}</small>
-          )}
+          {errors?.[roomName]?.maxPersons && <small className="srt-err-msg">{errors[roomName].maxPersons}</small>}
         </div>
       </div>
 
-      <label>Upload Room Image</label>
-
-      <label className="po-upload-btn">
-        Click to Upload Room Image
-        <input
-          type="file"
-          hidden
-          accept="image/*"
-          multiple
-          onChange={(e) => handleRoomImageChange(roomName, e)}
-          ref={(el) => (fileInputRefs.current[roomName] = el)}
-        />
-      </label>
-
-      {errors?.[roomName]?.image && (
-        <small className="po-error">{errors[roomName].image}</small>
-      )}
-
-      {roomImages[roomName] && roomImages[roomName].length > 0 && (
-        <div className="po-more-preview">
-          {roomImages[roomName].map((img, index) => (
-            <div key={index} className="po-more-image-box">
-              <img src={img.preview} alt={`${roomName}-${index}`} />
-
-              <button
-                type="button"
-                className="po-remove-img"
-                onClick={() => {
+      {/* Room images */}
+      <div className="srt-field" style={{ marginTop: 4 }}>
+        <label className="srt-label">Room Images <span className="srt-req">*</span></label>
+        <label className="srt-upload-zone">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <span>Upload room images</span>
+          <small>Multiple allowed</small>
+          <input
+            type="file"
+            hidden
+            accept="image/*"
+            multiple
+            onChange={(e) => {
+              const files = Array.from(e.target.files);
+              if (!files.length) return;
+              files.forEach((file) => {
+                const reader = new FileReader();
+                reader.onloadend = () =>
                   setRoomImages((prev) => ({
                     ...prev,
-                    [roomName]: prev[roomName].filter((_, i) => i !== index),
+                    [roomName]: [...(prev[roomName] || []), { file, preview: reader.result, base64: reader.result }],
                   }));
-                }}
-              >
-                ×
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+                reader.readAsDataURL(file);
+              });
+            }}
+            ref={(el) => (fileInputRefs.current[roomName] = el)}
+          />
+        </label>
+        {errors?.[roomName]?.image && <small className="srt-err-msg">{errors[roomName].image}</small>}
+
+        {roomImages[roomName]?.length > 0 && (
+          <div className="srt-img-grid">
+            {roomImages[roomName].map((img, i) => (
+              <div key={i} className="srt-img-thumb">
+                <img src={img.preview} alt={`${roomName}-${i}`} />
+                <button
+                  type="button"
+                  className="srt-remove-btn"
+                  onClick={() =>
+                    setRoomImages((prev) => ({
+                      ...prev,
+                      [roomName]: prev[roomName].filter((_, idx) => idx !== i),
+                    }))
+                  }
+                >×</button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
 export default function SelectRoomType() {
-  const [selectedRooms, setSelectedRooms] = useState([]);
-  const [roomImages, setRoomImages] = useState({});
-  const fileInputRefs = useRef({});
-  const formScrollRef = useRef(null);
-  const [roomData, setRoomData] = useState({});
-  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
-  const [showModal, setShowModal] = useState(false);
+  const fileInputRefs  = useRef({});
+  const { toasts, addToast } = useToast();
+
+  const [createData, setCreateData] = useState(null);
+  const [selectedRooms, setSelectedRooms] = useState([]);
+  const [roomData,   setRoomData]   = useState({});
+  const [roomImages, setRoomImages] = useState({});
+  const [errors,     setErrors]     = useState({});
+  const [isLoading,  setIsLoading]  = useState(false);
   const [sidebarHidden, setSidebarHidden] = useState(false);
 
+  /* restore session data */
+  useEffect(() => {
+    const draft = readAccommodationDraft();
+    setCreateData(draft.listing);
+    setRoomData(draft.roomData || {});
+    setRoomImages(draft.roomImages || {});
+    setSelectedRooms(draft.selectedRooms || []);
+
+    if (!draft.listing) {
+      addToast("Accommodation details were not found. Please complete step 1 first.", "error");
+      setTimeout(() => navigate("/property-owner/create-accommodation"), 1200);
+    }
+  }, [addToast, navigate]);
+
+  useEffect(() => {
+    if (!createData) return;
+    saveAccommodationRoomDraft({ roomData, roomImages, selectedRooms });
+  }, [createData, roomData, roomImages, selectedRooms]);
+
+  const handleRoomToggle = (room) =>
+    setSelectedRooms((prev) =>
+      prev.includes(room) ? prev.filter((r) => r !== room) : [...prev, room]
+    );
+
+  const handleRoomInputChange = (room, field, value) => {
+    setRoomData((prev) => ({ ...prev, [room]: { ...prev[room], [field]: value } }));
+    setErrors((prev) => ({ ...prev, [room]: { ...prev[room], [field]: "" } }));
+  };
+
+  const selectedRoomCount = selectedRooms.length;
+  const hasSelectedRooms = selectedRoomCount > 0;
+
+  /* ── Submit ── */
   const handleOK = async () => {
+    if (!createData) {
+      addToast("Accommodation details are missing. Please go back to step 1.", "error");
+      return;
+    }
+
+    let newErrors = {};
+    selectedRooms.forEach((room) => {
+      if (!roomData?.[room]?.price || Number(roomData[room].price) <= 0) {
+        newErrors[room] = { ...newErrors[room], price: "Room price must be greater than zero" };
+      }
+      if (!roomData?.[room]?.availableRooms || Number(roomData[room].availableRooms) <= 0) {
+        newErrors[room] = { ...newErrors[room], availableRooms: "Available rooms must be greater than zero" };
+      }
+      if (!roomData?.[room]?.maxPersons || Number(roomData[room].maxPersons) <= 0) {
+        newErrors[room] = { ...newErrors[room], maxPersons: "Max persons is required" };
+      }
+      if (!roomImages[room]?.length) {
+        newErrors[room] = { ...newErrors[room], image: "Please upload at least one room image" };
+      }
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      const msgs = [...new Set(Object.values(newErrors).flatMap((e) => Object.values(e)))];
+      msgs.slice(0, 4).forEach((msg, i) => setTimeout(() => addToast(msg, "error"), i * 120));
+      return;
+    }
+
     try {
-      let newErrors = {};
+      setIsLoading(true);
 
-      selectedRooms.forEach((room) => {
-        if (!roomImages[room] || roomImages[room].length === 0) {
-          newErrors[room] = {
-            image: "Please upload at least one room image",
-          };
-        }
-      });
+      const formData = new FormData();
+      formData.append("accommodationName",  createData.accommodationName);
+      formData.append("accommodationType",  createData.accommodationType || "");
+      formData.append("businessAddress",    createData.businessAddress);
+      formData.append("description",        createData.description);
+      formData.append("gcashNumber",        createData.gcashNumber);
+      formData.append("gcashAccountName",   createData.gcashAccountName);
+      formData.append("status",             createData.status || "open");
+      formData.append("closedDescription",  createData.closedDescription || "");
+      formData.append("ownerId",            localStorage.getItem("ownerId") || "");
+      formData.append("location",           JSON.stringify(createData.location || { lat: null, lng: null }));
+      const amenityPricing = buildPricedSelections(
+        AMENITIES_LIST,
+        createData.amenityPricing,
+        createData.amenities
+      );
+      const activityPricing = buildPricedSelections(
+        ACTIVITIES_LIST,
+        createData.activityPricing,
+        createData.activities
+      );
 
-      selectedRooms.forEach((room) => {
-        if (!roomData?.[room]?.price) {
-          newErrors[room] = {
-            ...newErrors[room],
-            price: "Room price is required",
-          };
-        }
-
-        if (!roomData?.[room]?.availableRooms) {
-          newErrors[room] = {
-            ...newErrors[room],
-            availableRooms: "Available rooms is required",
-          };
-        }
-
-        if (!roomData?.[room]?.maxPersons) {
-          newErrors[room] = {
-            ...newErrors[room],
-            maxPersons: "Max persons is required",
-          };
-        }
-      });
-
-      if (Object.keys(newErrors).length > 0) {
-        setErrors(newErrors);
+      if (
+        getMissingPriceSelections(amenityPricing).length ||
+        getMissingPriceSelections(activityPricing).length
+      ) {
+        setIsLoading(false);
+        addToast("Complete the amenity and activity prices in listing details before saving.", "error");
+        setTimeout(() => navigate("/property-owner/create-accommodation"), 1200);
         return;
       }
 
-      const createData = JSON.parse(
-        localStorage.getItem("createAccommodationData")
-      );
+      formData.append("amenities",          JSON.stringify(getSelectedPricingKeys(amenityPricing)));
+      formData.append("activities",         JSON.stringify(getSelectedPricingKeys(activityPricing)));
+      formData.append("amenityPricing",     JSON.stringify(getPricedSelectionsPayload(amenityPricing, AMENITIES_LIST)));
+      formData.append("activityPricing",    JSON.stringify(getPricedSelectionsPayload(activityPricing, ACTIVITIES_LIST)));
 
-      const formData = new FormData();
-
-      formData.append("accommodationName", createData.accommodationName);
-      formData.append("businessAddress", createData.businessAddress);
-      formData.append("description", createData.description);
-      formData.append("gcashNumber", createData.gcashNumber);
-      formData.append("gcashAccountName", createData.gcashAccountName);
-
+      /* profile image */
       if (createData.profileImageBase64) {
         const arr = createData.profileImageBase64.split(",");
         const mime = arr[0].match(/:(.*?);/)[1];
         const bstr = atob(arr[1]);
-        let n = bstr.length;
-        const u8arr = new Uint8Array(n);
-
-        while (n--) {
-          u8arr[n] = bstr.charCodeAt(n);
-        }
-
-        const file = new File([u8arr], "profile.jpg", { type: mime });
-        formData.append("profileImage", file);
+        const u8 = new Uint8Array(bstr.length);
+        for (let n = bstr.length - 1; n >= 0; n--) u8[n] = bstr.charCodeAt(n);
+        formData.append("profileImage", new File([u8], "profile.jpg", { type: mime }));
       }
 
-      formData.append("roomData", JSON.stringify(roomData));
+      formData.append("roomData",      JSON.stringify(roomData));
       formData.append("selectedRooms", JSON.stringify(selectedRooms));
 
-      const storedCoverImages = JSON.parse(
-        localStorage.getItem("coverImages") || "[]"
-      );
-
-      storedCoverImages.forEach((imgObj, index) => {
+      /* cover images */
+      const storedCovers = readAccommodationDraft().coverImages || [];
+      storedCovers.forEach((imgObj, i) => {
         const arr = imgObj.base64.split(",");
         const mime = arr[0].match(/:(.*?);/)[1];
         const bstr = atob(arr[1]);
-        let n = bstr.length;
-        const u8arr = new Uint8Array(n);
-
-        while (n--) {
-          u8arr[n] = bstr.charCodeAt(n);
-        }
-
-        const file = new File([u8arr], `cover-${index}.jpg`, { type: mime });
-        formData.append("coverImages", file);
+        const u8 = new Uint8Array(bstr.length);
+        for (let n = bstr.length - 1; n >= 0; n--) u8[n] = bstr.charCodeAt(n);
+        formData.append("coverImages", new File([u8], `cover-${i}.jpg`, { type: mime }));
       });
 
+      /* room images */
       selectedRooms.forEach((room) => {
-        if (roomImages[room]?.length > 0) {
-          roomImages[room].forEach((imgObj, index) => {
-            const arr = imgObj.base64.split(",");
-            const mime = arr[0].match(/:(.*?);/)[1];
-            const bstr = atob(arr[1]);
-            let n = bstr.length;
-            const u8arr = new Uint8Array(n);
-
-            while (n--) {
-              u8arr[n] = bstr.charCodeAt(n);
-            }
-
-            const file = new File([u8arr], `room-${room}-${index}.jpg`, {
-              type: mime,
-            });
-
-            formData.append("roomImages", file);
-            formData.append("roomImageNames", room);
-          });
-        }
+        (roomImages[room] || []).forEach((imgObj, i) => {
+          const arr = imgObj.base64.split(",");
+          const mime = arr[0].match(/:(.*?);/)[1];
+          const bstr = atob(arr[1]);
+          const u8 = new Uint8Array(bstr.length);
+          for (let n = bstr.length - 1; n >= 0; n--) u8[n] = bstr.charCodeAt(n);
+          formData.append("roomImages", new File([u8], `room-${room}-${i}.jpg`, { type: mime }));
+          formData.append("roomImageNames", room);
+        });
       });
 
-      const res = await fetch("http://localhost:4000/api/accommodations", {
-        method: "POST",
-        body: formData,
-      });
-
+      const res = await fetch(`${API_URL}/accommodations`, { method: "POST", body: formData });
       const data = await res.json();
 
       if (!res.ok) {
-        setModalMessage(data.message);
-        setShowModal(true);
+        setIsLoading(false);
+        addToast(data.message || "Failed to save accommodation", "error");
         return;
       }
 
-      localStorage.removeItem("createAccommodationData");
-      localStorage.removeItem("roomData");
-      localStorage.removeItem("roomImages");
-      localStorage.removeItem("selectedRooms");
-      localStorage.removeItem("coverImages");
+      /* clean up */
+      clearAccommodationDraft();
 
-      setModalMessage("Saving accommodation...");
-      setShowModal(true);
-      setIsLoading(true);
-
-      setTimeout(() => {
-        setShowModal(false);
-        navigate("/property-owner/dashboard");
-      }, 2000);
-    } catch (error) {
-      console.error(error);
-      setModalMessage("Server error. Please try again.");
-      setShowModal(true);
+      addToast("Accommodation saved successfully!", "success");
+      setTimeout(() => navigate("/property-owner/create-accommodation"), 1800);
+    } catch (err) {
+      console.error(err);
+      setIsLoading(false);
+      addToast("Server error. Please try again.", "error");
     }
   };
-
-  const handleRoomToggle = (room) => {
-    setSelectedRooms((prev) =>
-      prev.includes(room)
-        ? prev.filter((r) => r !== room)
-        : [...prev, room]
-    );
-  };
-
-  const handleRoomImageChange = (room, e) => {
-    const files = Array.from(e.target.files);
-    if (!files.length) return;
-
-    files.forEach((file) => {
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        setRoomImages((prev) => ({
-          ...prev,
-          [room]: [
-            ...(prev[room] || []),
-            {
-              file,
-              preview: reader.result,
-              base64: reader.result,
-            },
-          ],
-        }));
-      };
-
-      reader.readAsDataURL(file);
-    });
-
-    setErrors((prev) => ({
-      ...prev,
-      [room]: {
-        ...prev[room],
-        image: "",
-      },
-    }));
-  };
-
-  const handleRoomInputChange = (room, field, value) => {
-    setRoomData((prev) => ({
-      ...prev,
-      [room]: {
-        ...prev[room],
-        [field]: value,
-      },
-    }));
-
-    setErrors((prev) => {
-      if (!prev[room]?.[field]) return prev;
-
-      return {
-        ...prev,
-        [room]: {
-          ...prev[room],
-          [field]: "",
-        },
-      };
-    });
-  };
-
-  useEffect(() => {
-    const storedRoomData = localStorage.getItem("roomData");
-    const storedRoomImages = localStorage.getItem("roomImages");
-    const storedSelectedRooms = localStorage.getItem("selectedRooms");
-
-    if (storedRoomData) setRoomData(JSON.parse(storedRoomData));
-    if (storedRoomImages) setRoomImages(JSON.parse(storedRoomImages));
-    if (storedSelectedRooms) setSelectedRooms(JSON.parse(storedSelectedRooms));
-  }, []);
-
-  useEffect(() => {
-    if (selectedRooms.length > 0 && formScrollRef.current) {
-      formScrollRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  }, [selectedRooms]);
 
   const handleBack = () => {
-    localStorage.setItem("roomData", JSON.stringify(roomData));
-    localStorage.setItem("roomImages", JSON.stringify(roomImages));
-    localStorage.setItem("selectedRooms", JSON.stringify(selectedRooms));
-
-    setModalMessage("Returning to Create Accommodation...");
-    setShowModal(true);
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setShowModal(false);
-      navigate("/property-owner/create-accommodation");
-    }, 2000);
+    saveAccommodationRoomDraft({ roomData, roomImages, selectedRooms });
+    navigate("/property-owner/create-accommodation");
   };
 
   return (
     <div className="property-owner-layout">
-      
-      {/* SIDEBAR */}
       <PropertyOwnerSidebar
         active="accommodations"
         isHidden={sidebarHidden}
+        setIsHidden={setSidebarHidden}
       />
 
-      {/* MAIN CONTENT */}
-      <main
-        className="property-owner-main"
-        onClick={() => setSidebarHidden(true)}
-      >
-        
-        {/* GREEN HEADER */}
-        <div className="po-accommodation-header">
-          My Accommodations
+      <main className="property-owner-main">
 
-          {sidebarHidden && (
-            <MenuButton
-              onClick={(e) => {
-                e.stopPropagation();
-                setSidebarHidden(false);
-              }}
-            />
-          )}
-        </div>
-
-        {/* MANAGE ROOM TYPES CARD */}
-        <div className="po-room-card">
-          <h3>Manage Room Types</h3>
-          <p className="po-subtitle">
-            Define and configure the different room types available at your property.
-          </p>
-
-          <div className="po-room-checkboxes">
-            {["Single Room", "Double Room", "Deluxe Room", "Family Room", "Dormitory Room", "Double Deluxe Room"].map((room) => (
-              <label key={room}>
-                <input
-                  type="checkbox"
-                  checked={selectedRooms.includes(room)}
-                  onChange={() => handleRoomToggle(room)}
-                />
-                {room}
-              </label>
-            ))}
+        {/* ── Page header ── */}
+        <div className="srt-page-header">
+          <div className="srt-header-left">
+            {sidebarHidden && (
+              <MenuButton onClick={(e) => { e.stopPropagation(); setSidebarHidden(false); }} />
+            )}
+            <div>
+              <h2 className="srt-page-title">Select Room Types</h2>
+              <p className="srt-page-sub">Define the room types available at your property</p>
+            </div>
           </div>
-        </div>
-
-        <div className="po-room-forms-scroll">
-          {["Single Room", "Double Room", "Deluxe Room", "Family Room", "Dormitory Room", "Double Deluxe Room"].map((room) => (
-            <RoomForm
-              key={room}
-              roomName={room}
-              maxOptions={[1,2,3,4,5,6,7,8,9,10]}
-              selectedRooms={selectedRooms}
-              handleRoomImageChange={handleRoomImageChange}
-              roomImages={roomImages}
-              fileInputRefs={fileInputRefs}
-              setRoomImages={setRoomImages}
-              formRef={formScrollRef}
-              roomData={roomData}
-              errors={errors}
-              handleRoomInputChange={handleRoomInputChange}
-            />
-          ))}
-        </div>
-
-        {/* ACTION BUTTONS */}
-        <div className="po-actions">
-          <button className="po-back-btn" onClick={handleBack}>
+          <button className="srt-back-btn" onClick={handleBack}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            </svg>
             Back
           </button>
-
-          <button className="po-ok-btn" onClick={handleOK}>
-            OK
-          </button>
         </div>
 
+        <div className="srt-layout">
+          {createData && (
+            <div className="srt-summary-card">
+              <div className="srt-summary-header">
+                <div>
+                  <span className="srt-summary-kicker">Listing Summary</span>
+                  <h3>{createData.accommodationName}</h3>
+                  <p>
+                    {createData.accommodationType || "Accommodation"} in{" "}
+                    {TRINIDAD_DESTINATION.fullLabel}
+                  </p>
+                </div>
+                <AccommodationStatusBadge status={createData.status || "open"} />
+              </div>
+
+              <div className="srt-summary-grid">
+                <div>
+                  <span>Business Address</span>
+                  <strong>{createData.businessAddress}</strong>
+                </div>
+                <div>
+                  <span>Payment Profile</span>
+                  <strong>{createData.gcashAccountName}</strong>
+                </div>
+                <div>
+                  <span>Status Detail</span>
+                  <strong>{getStatusMeta(createData.status || "open").caption}</strong>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── Room type selector card ── */}
+          <div className="srt-selector-card">
+            <div className="srt-section-topline">
+              <div>
+                <h3 className="srt-section-title">Room Types and Inventory</h3>
+                <p className="srt-selector-hint">
+                  Room setup is optional. You can publish the accommodation now and add room types
+                  later, or select room types below if you want to configure inventory right away.
+                </p>
+              </div>
+              <span className={`srt-optional-pill ${hasSelectedRooms ? "srt-optional-pill--active" : ""}`}>
+                {hasSelectedRooms ? `${selectedRoomCount} selected` : "Optional"}
+              </span>
+            </div>
+            <p className="srt-selector-hint">
+              Select all room types your property offers. Only the room types you choose will need
+              price, capacity, and image details.
+            </p>
+            <div className="srt-chips">
+              {ROOM_TYPES.map((room) => {
+                const selected = selectedRooms.includes(room);
+                return (
+                  <button
+                    key={room}
+                    type="button"
+                    className={`srt-chip ${selected ? "srt-chip--active" : ""}`}
+                    onClick={() => handleRoomToggle(room)}
+                  >
+                    {selected && (
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    )}
+                    {room}
+                  </button>
+                );
+              })}
+            </div>
+            {hasSelectedRooms ? (
+              <p className="srt-selected-count">
+                {selectedRoomCount} room type{selectedRoomCount > 1 ? "s" : ""} selected
+              </p>
+            ) : (
+              <p className="srt-empty-note">
+                No room types selected yet. The accommodation will still be saved, and you can add
+                rooms later from Manage Listing.
+              </p>
+            )}
+          </div>
+
+          {/* ── Room forms ── */}
+          {selectedRooms.length > 0 && (
+            <div className="srt-forms">
+              {ROOM_TYPES.map((room) => (
+                <RoomForm
+                  key={room}
+                  roomName={room}
+                  selectedRooms={selectedRooms}
+                  roomData={roomData}
+                  roomImages={roomImages}
+                  errors={errors}
+                  fileInputRefs={fileInputRefs}
+                  setRoomImages={setRoomImages}
+                  handleRoomInputChange={handleRoomInputChange}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* ── Actions ── */}
+          <div className="srt-actions">
+            <button type="button" className="srt-cancel-btn" onClick={handleBack}>
+              Back
+            </button>
+            <button type="button" className="srt-submit-btn" onClick={handleOK}>
+              {hasSelectedRooms ? "Save Accommodation" : "Save Without Room Types"}
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                <polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+              </svg>
+            </button>
+          </div>
+
+        </div>
       </main>
 
-      <MessageModal
-        show={showModal}
-        message={modalMessage}
-        onClose={() => setShowModal(false)}
-        showButton={false}
-        autoClose={true}
-        duration={2000}
-      />
-
+      <ToastStack toasts={toasts} />
       <LoadingModal show={isLoading} />
     </div>
   );

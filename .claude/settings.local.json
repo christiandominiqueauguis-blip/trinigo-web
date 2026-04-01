@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Christian Dominique/Documents/TriniGo_Backend/**)",
+      "Bash(node -e \"const Admin = require\\(''''./models/Admin''''\\); console.log\\(Admin.schema.paths\\)\")",
+      "Bash(node -e \"const Admin = require\\(''./models/Admin''\\); console.log\\(Object.keys\\(Admin.schema.paths\\)\\)\")",
+      "Bash(ipconfig)",
+      "Bash(npm install:*)",
+      "Bash(cd /c/Users/Christian Dominique/Documents/trinigo-web/src)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\Christian Dominique\\Documents\\TriniGo_Backend"
+    ]
+  }
+}

@@ -42,17 +42,6 @@ export default function TourismManagerLogin() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleGoToRegister = () => {
-    setModalMessage("Redirecting to registration...");
-    setShowModal(true);
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-      navigate("/tourism-site-manager/register");
-    }, 2000);
-  };
-
   const handleLogin = async () => {
     if (!validateForm()) return;
 
@@ -82,7 +71,9 @@ export default function TourismManagerLogin() {
 
       // ✅ SUCCESS — save to localStorage
       localStorage.setItem("tourismManagerFullName", data.manager.fullName);
+      localStorage.setItem("tourismManagerName", data.manager.fullName);
       localStorage.setItem("tourismManagerId", data.manager.id);
+      localStorage.setItem("tourismManagerAuthToken", data.token || "");
 
       setIsSuccess(true);
       setModalMessage("Login successful ✅");
@@ -173,16 +164,7 @@ export default function TourismManagerLogin() {
         </button>
 
         <div className="tm-register-link">
-          <span>Have you not registered yet?</span>
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              handleGoToRegister();
-            }}
-          >
-            Register
-          </a>
+          <span>Tourism Site Manager accounts are created by admin only.</span>
         </div>
       </div>
 

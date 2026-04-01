@@ -84,7 +84,8 @@
   align-items: center;
 }
 
-.admin-login-link a {
+.admin-login-link a,
+.admin-login-link-button {
   margin-left: 6px;
   color: yellow;
   font-weight: 600;
@@ -92,9 +93,14 @@
   cursor: pointer;
   font-weight: bold;
   text-decoration: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font: inherit;
 }
 
-.admin-login-link a:hover {
+.admin-login-link a:hover,
+.admin-login-link-button:hover {
   color: #ffffff;
   text-decoration: none;
 }
@@ -137,4 +143,110 @@
 /* 🔒 Chrome / Edge (WebKit) */
 .admin-password-wrapper input[type="password"]::-webkit-textfield-decoration-container {
   display: none;
+}
+
+/* ── REJECTED ACCOUNT MODAL ── */
+.po-rejected-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: rej-fade 0.2s ease;
+}
+
+@keyframes rej-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.po-rejected-modal {
+  background: white;
+  border-radius: 20px;
+  padding: 36px 32px 28px;
+  width: 360px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+  animation: rej-slide 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes rej-slide {
+  from { transform: translateY(28px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.po-rejected-icon {
+  width: 68px;
+  height: 68px;
+  background: #dc2626;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.po-rejected-badge {
+  display: inline-block;
+  background: #fee2e2;
+  color: #991b1b;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  letter-spacing: 0.03em;
+}
+
+.po-rejected-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 12px;
+}
+
+.po-rejected-message {
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 1.7;
+  margin: 0 0 18px;
+}
+
+.po-rejected-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: #6b7280;
+  text-align: left;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.po-rejected-note svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.po-rejected-close-btn {
+  width: 100%;
+  padding: 12px;
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.po-rejected-close-btn:hover {
+  background: #b91c1c;
 }

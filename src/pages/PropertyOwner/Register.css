@@ -221,3 +221,167 @@ textarea {
   border-radius: 6px;
   font-size: 13px;
 }
+
+/* ── SECTION HEADERS ── */
+.reg-section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  margin: 28px 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.25);
+}
+
+.reg-section-icon {
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── FIELD HELPERS ── */
+.req {
+  color: #fca5a5;
+  font-weight: 700;
+}
+
+.opt {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.password-hint {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 4px 0 0;
+}
+
+/* Allow password field to span full width in .row */
+.row .field.full-width {
+  grid-column: 1 / -1;
+}
+
+/* ── UPLOAD BOX ENHANCED ── */
+.upload-box {
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px dashed rgba(255, 255, 255, 0.45);
+  padding: 28px 12px;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  color: white;
+}
+
+.upload-box:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.upload-icon {
+  opacity: 0.85;
+}
+
+.upload-label-text {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.upload-sub {
+  font-size: 12px;
+  opacity: 0.65;
+}
+
+.doc-hint {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0 0 10px;
+}
+
+/* ── PDF PLACEHOLDER IN GRID ── */
+.permit-pdf-placeholder {
+  width: 100%;
+  height: 160px;
+  background: #fff8f8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.permit-pdf-placeholder span {
+  font-size: 11px;
+  color: #555;
+  text-align: center;
+  word-break: break-all;
+  max-width: 100%;
+}
+
+/* ── TOAST STACK ── */
+.reg-toast-stack {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.reg-toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+  min-width: 260px;
+  max-width: 360px;
+  animation: reg-toast-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+             reg-toast-out 0.3s ease 2.7s forwards;
+}
+
+.reg-toast--error {
+  background: #dc2626;
+}
+
+.reg-toast--success {
+  background: #116735;
+}
+
+.reg-toast-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  opacity: 0.9;
+}
+
+@keyframes reg-toast-in {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes reg-toast-out {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(40px); }
+}
