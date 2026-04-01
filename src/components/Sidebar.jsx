@@ -17,6 +17,14 @@ export default function Sidebar({ active, isHidden, setIsHidden, disabled = fals
   const navigate = useNavigate();
   const [adminProfile, setAdminProfile] = useState(getStoredAdminProfile());
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const closeSidebar = () => setIsHidden?.(true);
+
+  const handleNavItemClick = () => {
+    if (!setIsHidden || typeof window === "undefined") return;
+    if (window.matchMedia("(max-width: 960px)").matches) {
+      setIsHidden(true);
+    }
+  };
 
   useEffect(() => {
     const syncProfile = () => setAdminProfile(getStoredAdminProfile());
@@ -52,6 +60,30 @@ export default function Sidebar({ active, isHidden, setIsHidden, disabled = fals
       .catch(() => {});
   }, []);
 
+  useEffect(() => {
+    if (!setIsHidden || isHidden || typeof window === "undefined") return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    const isSmallScreen = window.matchMedia("(max-width: 960px)").matches;
+
+    if (isSmallScreen) {
+      document.body.style.overflow = "hidden";
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setIsHidden(true);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isHidden, setIsHidden]);
+
   const handleLogout = () => {
     clearRoleSession("admin");
     navigate("/");
@@ -61,11 +93,24 @@ export default function Sidebar({ active, isHidden, setIsHidden, disabled = fals
 
   return (
     <>
-      <aside className={`sidebar ${disabled ? "sidebar-disabled" : ""} ${isHidden ? "hidden" : ""}`}>
+      {setIsHidden && !isHidden ? (
+        <button
+          type="button"
+          className="sidebar-backdrop"
+          onClick={closeSidebar}
+          aria-label="Close sidebar"
+        />
+      ) : null}
+
+      <aside
+        className={`sidebar ${disabled ? "sidebar-disabled" : ""} ${isHidden ? "hidden" : ""}`}
+        aria-hidden={isHidden}
+      >
         {setIsHidden ? (
           <button
+            type="button"
             className="sidebar-close-btn"
-            onClick={() => setIsHidden(true)}
+            onClick={closeSidebar}
             aria-label="Close sidebar"
           >
             <span></span>
@@ -108,7 +153,7 @@ export default function Sidebar({ active, isHidden, setIsHidden, disabled = fals
           </div>
 
           <nav className="sidebar-nav">
-            <Link to="/admin/dashboard" className={active === "dashboard" ? "active" : ""}>
+            <Link to="/admin/dashboard" className={active === "dashboard" ? "active" : ""} onClick={handleNavItemClick}>
               <span className="sidebar-nav-icon">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="3" y="3" width="7" height="7" rx="1" />
@@ -122,7 +167,7 @@ export default function Sidebar({ active, isHidden, setIsHidden, disabled = fals
 
             <p className="sidebar-nav-label">Management</p>
 
-            <Link to="/admin/tourist-spots" className={active === "tourist-spots" ? "active" : ""}>
+            <Link to="/admin/tourist-spots" className={active === "tourist-spots" ? "active" : ""} onClick={handleNavItemClick}>
               <span className="sidebar-nav-icon">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 2l4 7h-8l4-7z" />
@@ -133,7 +178,7 @@ export default function Sidebar({ active, isHidden, setIsHidden, disabled = fals
               Tourist Spots
             </Link>
 
-            <Link to="/admin/accommodations" className={active === "accommodations" ? "active" : ""}>
+            <Link to="/admin/accommodations" className={active === "accommodations" ? "active" : ""} onClick={handleNavItemClick}>
               <span className="sidebar-nav-icon">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
@@ -143,7 +188,7 @@ export default function Sidebar({ active, isHidden, setIsHidden, disabled = fals
               Accommodations
             </Link>
 
-            <Link to="/admin/property-owner-application" className={active === "property" ? "active" : ""}>
+            <Link to="/admin/property-owner-application" className={active === "property" ? "active" : ""} onClick={handleNavItemClick}>
               <span className="sidebar-nav-icon">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M20 21a8 8 0 0 0-16 0" />
@@ -153,7 +198,7 @@ export default function Sidebar({ active, isHidden, setIsHidden, disabled = fals
               Establishment Application
             </Link>
 
-            <Link to="/admin/user-management" className={active === "user-management" ? "active" : ""}>
+            <Link to="/admin/user-management" className={active === "user-management" ? "active" : ""} onClick={handleNavItemClick}>
               <span className="sidebar-nav-icon">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -167,7 +212,7 @@ export default function Sidebar({ active, isHidden, setIsHidden, disabled = fals
 
             <p className="sidebar-nav-label">Insights</p>
 
-            <Link to="/admin/feedback" className={active === "feedback" ? "active" : ""}>
+            <Link to="/admin/feedback" className={active === "feedback" ? "active" : ""} onClick={handleNavItemClick}>
               <span className="sidebar-nav-icon">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -176,7 +221,7 @@ export default function Sidebar({ active, isHidden, setIsHidden, disabled = fals
               Feedback
             </Link>
 
-            <Link to="/admin/report" className={active === "report" ? "active" : ""}>
+            <Link to="/admin/report" className={active === "report" ? "active" : ""} onClick={handleNavItemClick}>
               <span className="sidebar-nav-icon">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="20" x2="18" y2="10" />

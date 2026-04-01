@@ -1,4 +1,5 @@
 .sidebar {
+  --sidebar-width: 262px;
   width: 262px;
   background: linear-gradient(180deg, #ffffff 0%, #f8fbf9 100%);
   padding: 12px;
@@ -9,8 +10,9 @@
   height: 100vh;
   overflow: hidden;
   flex-shrink: 0;
-  transition: transform 0.3s ease, width 0.3s ease, padding 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.3s ease, width 0.3s ease, padding 0.3s ease, border-color 0.3s ease, opacity 0.22s ease;
   box-sizing: border-box;
+  z-index: 1200;
 }
 
 .sidebar-disabled {
@@ -19,14 +21,19 @@
   filter: blur(1px);
 }
 
+.sidebar-backdrop {
+  display: none;
+}
+
 .sidebar.hidden {
-  transform: translateX(-100%);
+  transform: translateX(-18px);
   width: 0;
   padding: 0;
   border-right-color: transparent;
   overflow: hidden;
   pointer-events: none;
   visibility: hidden;
+  opacity: 0;
 }
 
 .sidebar-scroll {
@@ -214,8 +221,8 @@
   right: 14px;
   width: 36px;
   height: 36px;
-  background: transparent;
-  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #dbe7df;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -223,12 +230,15 @@
   align-items: center;
   gap: 5px;
   padding: 4px;
-  border-radius: 8px;
-  transition: background 0.2s ease;
+  border-radius: 12px;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
 }
 
 .sidebar-close-btn:hover {
-  background: #f3f4f6;
+  background: #f3f8f5;
+  border-color: #c7dbcf;
+  transform: translateY(-1px);
 }
 
 .sidebar-close-btn span {
@@ -335,4 +345,47 @@
   border: none;
   background: #dc2626;
   color: white;
+}
+
+@media (max-width: 960px) {
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    border: none;
+    background: rgba(15, 23, 42, 0.34);
+    z-index: 1190;
+    backdrop-filter: blur(2px);
+  }
+
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(86vw, 320px);
+    max-width: 320px;
+    height: 100dvh;
+    box-shadow: 0 24px 54px rgba(15, 23, 42, 0.22);
+  }
+
+  .sidebar.hidden {
+    width: min(86vw, 320px);
+    max-width: 320px;
+    padding: 12px;
+    border-right-color: #dde7e1;
+    transform: translateX(calc(-100% - 18px));
+  }
+
+  .sidebar-top {
+    justify-content: flex-start;
+    padding: 0 52px 0 4px;
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .sidebar-close-btn,
+  .sidebar-close-btn span {
+    transition: none;
+  }
 }

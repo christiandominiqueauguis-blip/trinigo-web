@@ -133,11 +133,14 @@ export default function PropertyOwnerApplication() {
         setIsHidden={setIsSidebarHidden}
       />
 
-      {isSidebarHidden && (
-        <MenuButton onClick={() => setIsSidebarHidden(false)} />
-      )}
-
       <main className="property-owner-main">
+        {isSidebarHidden ? (
+          <MenuButton
+            className="menu-button--floating"
+            onClick={() => setIsSidebarHidden(false)}
+          />
+        ) : null}
+
         <div className="property-owner-wrapper">
           <div className="property-owner-header">
             Establishment Applications

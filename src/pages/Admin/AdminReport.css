@@ -109,10 +109,6 @@
   background: #ddd;
 }
 
-.sidebar.hidden ~ .admin-report-main {
-  margin-left: -240px;
-}
-
 .admin-report-table th:last-child,
 .admin-report-table td:last-child {
   border-right: none;
@@ -226,4 +222,14 @@
 
 .system-message-modal button:hover {
   background: #0c4f28;
+}
+
+@media (max-width: 768px) {
+  .admin-report-main {
+    padding: 16px;
+  }
+
+  .admin-report-header {
+    font-size: 22px;
+  }
 }

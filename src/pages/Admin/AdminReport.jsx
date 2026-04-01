@@ -89,11 +89,14 @@ export default function AdminReport() {
         setIsHidden={setIsSidebarHidden}
       />
 
-      {isSidebarHidden && (
-        <MenuButton onClick={() => setIsSidebarHidden(false)} />
-      )}
-
       <main className="admin-report-main">
+        {isSidebarHidden ? (
+          <MenuButton
+            className="menu-button--floating"
+            onClick={() => setIsSidebarHidden(false)}
+          />
+        ) : null}
+
         <div className="admin-report-header">Report</div>
 
         <div className="admin-report-tabs">

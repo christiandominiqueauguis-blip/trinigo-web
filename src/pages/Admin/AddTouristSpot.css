@@ -100,14 +100,6 @@
 }
 
 /* SLIDE EFFECT WHEN SIDEBAR HIDDEN */
-.add-tourist-wrapper {
-  transition: margin-left 0.3s ease;
-}
-
-.sidebar.hidden ~ .add-tourist-main {
-  margin-left: -240px;
-}
-
 .error-text {
   color: #b00020;
   font-size: 12px;
@@ -241,4 +233,20 @@
 
 .system-message-modal button:hover {
   background: #0c4f28;
+}
+
+@media (max-width: 768px) {
+  .add-tourist-main {
+    padding: 16px;
+  }
+
+  .add-tourist-card {
+    width: 100%;
+    padding: 24px 18px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
 }

@@ -245,7 +245,6 @@ export default function Dashboard() {
     loadDashboardStats();
   }, [adminAuthHeaders]);
 
-  const adminName = localStorage.getItem("fullName") || "Administrator";
   const chartStatusData = useMemo(() => stats.applicationStatus || [], [stats.applicationStatus]);
   const unreadNotifications = notifications.filter((item) => !item.isRead).length;
 
@@ -303,22 +302,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="admin-dashboard-hero">
-          <div className="admin-dashboard-hero-copy">
-            <span className="admin-dashboard-kicker">Admin Control Center</span>
-            <h1>Monitor accommodations, tourist spots, applications, and feedback from one dashboard.</h1>
-            <p>
-              Stay on top of platform activity using the same fast overview experience available in the
-              property owner workspace.
-            </p>
-          </div>
-
-          <div className="admin-dashboard-badge">
-            <span>Signed in as</span>
-            <strong>{adminName}</strong>
-            <small>Administrator</small>
-          </div>
-        </div>
 
         <div className="pod-stats-grid">
           {CARDS.map((card) => (

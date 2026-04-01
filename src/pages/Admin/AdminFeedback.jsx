@@ -98,6 +98,7 @@ export default function AdminFeedback() {
       <div className="po-content">
         {sidebarHidden && (
           <MenuButton
+            className="menu-button--floating"
             onClick={(e) => {
               e.stopPropagation();
               setSidebarHidden(false);

@@ -296,18 +296,6 @@
   stroke: black;
 }
 
-.property-owner-layout {
-  transition: margin-left 0.3s ease;
-}
-
-.sidebar.hidden ~ .property-owner-main {
-  margin-left: -240px;
-}
-
-.sidebar.hidden ~ .property-owner-main .property-owner-cards {
-  grid-template-columns: repeat(4, 280px);
-}
-
 .details-modal {
   position: fixed;
   top: 0;
@@ -381,4 +369,18 @@
   color: #116735;
   font-size: 13px;
   text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .property-owner-main {
+    padding: 16px;
+  }
+
+  .property-owner-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .property-owner-card {
+    max-width: none;
+  }
 }

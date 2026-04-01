@@ -34,12 +34,15 @@ export default function TouristSpots() {
         setIsHidden={setIsSidebarHidden}
       />
 
-      {isSidebarHidden && (
-        <MenuButton onClick={() => setIsSidebarHidden(false)} />
-      )}
-
       {/* MAIN CONTENT */}
       <main className="tourist-main">
+        {isSidebarHidden ? (
+          <MenuButton
+            className="menu-button--floating"
+            onClick={() => setIsSidebarHidden(false)}
+          />
+        ) : null}
+
         {/* HEADER */}
         <div className="tourist-header">Tourist Spots</div>
 
