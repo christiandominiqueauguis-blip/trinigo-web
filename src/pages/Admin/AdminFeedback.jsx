@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import Pagination from "../../components/Pagination";
 import Sidebar from "../../components/Sidebar";
 import { API_URL, BASE_URL } from "../../config/api";
+import usePagination from "../../hooks/usePagination";
 import "./AdminFeedback.css";
 import MenuButton from "../../components/MenuButton";
 
@@ -50,16 +52,23 @@ function FeedbackCard({ review }) {
 }
 
 export default function AdminFeedback() {
-  const [touristSpots, setTouristSpots] = useState([]);
   const [reviewsData, setReviewsData] = useState([]);
   const [sidebarHidden, setSidebarHidden] = useState(false);
+  const flattenedReviews = reviewsData.flatMap((spot) =>
+    Array.isArray(spot.reviews)
+      ? spot.reviews.map((review) => ({ ...review, spotName: spot.spotName }))
+      : []
+  );
+  const { currentPage, pageSize, paginatedItems, setCurrentPage, setPageSize, totalItems, totalPages } =
+    usePagination(flattenedReviews, {
+      initialPageSize: 6,
+      resetKey: flattenedReviews.length,
+    });
 
   useEffect(() => {
     fetch(`${API_URL}/tourist-spots`)
       .then((res) => res.json())
       .then(async (spots) => {
-        setTouristSpots(spots);
-
         const allReviews = await Promise.all(
           spots.map(async (spot) => {
             const res = await fetch(
@@ -86,14 +95,7 @@ export default function AdminFeedback() {
   setIsHidden={setSidebarHidden}
 />
 
-      <div
-  className="po-content"
-  onClick={() => {
-    if (!sidebarHidden) {
-      setSidebarHidden(true);
-    }
-  }}
->
+      <div className="po-content">
         {sidebarHidden && (
           <MenuButton
             onClick={(e) => {
@@ -108,12 +110,20 @@ export default function AdminFeedback() {
 </div>
 
         <div className="feedback-cards-container">
-          {reviewsData.map((spot) =>
-            spot.reviews.map((review) => (
-              <FeedbackCard key={review._id} review={review} />
-            ))
-          )}
+          {paginatedItems.map((review) => (
+            <FeedbackCard key={review._id} review={review} />
+          ))}
         </div>
+
+        <Pagination
+          currentPage={currentPage}
+          itemLabel="reviews"
+          onPageChange={setCurrentPage}
+          onPageSizeChange={setPageSize}
+          pageSize={pageSize}
+          totalItems={totalItems}
+          totalPages={totalPages}
+        />
       </div>
     </div>
   );

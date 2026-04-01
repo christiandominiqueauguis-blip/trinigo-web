@@ -1,12 +1,15 @@
 .admin-report-container {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   background-color: #f4f6f8;
 }
 
 .admin-report-main {
   flex: 1;
   padding: 25px;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .admin-report-header {

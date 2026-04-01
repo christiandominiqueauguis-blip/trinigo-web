@@ -1,4 +1,3 @@
-import "./AdminRegister.css";
 import trinigoLogo from "../../assets/trinigo-logo.png";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -26,30 +25,10 @@ export default function AdminLogin() {
 
     if (!password) {
       newErrors.password = "Password is required";
-    } else {
-      if (password.length < 8) {
-        newErrors.password = "Password must be at least 8 characters";
-      } else if (!/[A-Z]/.test(password)) {
-        newErrors.password = "Password must contain at least 1 uppercase letter";
-      } else if (!/\d/.test(password)) {
-        newErrors.password = "Password must contain at least 1 number";
-      } else if (!/[^A-Za-z0-9]/.test(password)) {
-        newErrors.password = "Password must contain at least 1 symbol";
-      }
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
-
-  // ✅ Loading spinner lang, walang MessageModal
-  const handleGoToRegister = () => {
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-      navigate("/admin/register");
-    }, 2000);
   };
 
   const handleLogin = async () => {
@@ -79,15 +58,14 @@ export default function AdminLogin() {
         return;
       }
 
-      // ✅ SUCCESS
-      setIsSuccess(true);
-      setModalMessage("Login successfully ✅");
-      setShowModal(true);
+      localStorage.setItem("adminId", data.admin.id);
+      localStorage.setItem("fullName", data.admin.fullName);
+      localStorage.setItem("adminAuthToken", data.token || "");
 
       setTimeout(() => {
         setIsLoading(false);
         navigate("/admin/dashboard");
-      }, 5000);
+      }, 1500);
     } catch (err) {
       console.error(err);
       setIsSuccess(false);
@@ -168,19 +146,6 @@ export default function AdminLogin() {
           Log in
         </button>
 
-        {/* REGISTER LINK */}
-        <div className="admin-login-link">
-          <span>Have you not registered yet?</span>
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              handleGoToRegister();
-            }}
-          >
-            Register
-          </a>
-        </div>
       </div>
 
       <LoadingModal show={isLoading} text="Loading..." />

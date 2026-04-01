@@ -3,11 +3,14 @@
   padding: 30px;
   background: #f2f2f2;
   transition: margin-left 0.3s ease;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .property-owner-layout {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   background-color: #f4f6f8;
 }
 

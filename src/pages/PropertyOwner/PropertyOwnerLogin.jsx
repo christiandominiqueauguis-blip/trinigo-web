@@ -1,10 +1,11 @@
 import "../Admin/AdminRegister.css";
 import trinigoLogo from "../../assets/trinigo-logo.png";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { API_URL } from "../../config/api";
 import LoadingModal from "../../components/LoadingModal";
 import MessageModal from "../../components/MessageModal";
+import { saveOwnerSession } from "../../features/propertyOwner/propertyOwnerSession";
 
 export default function PropertyOwnerLogin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,7 +15,16 @@ export default function PropertyOwnerLogin() {
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [showRejectedModal, setShowRejectedModal] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Auto-show rejection modal if redirected from sidebar
+  useEffect(() => {
+    if (location.state?.rejected) {
+      setShowRejectedModal(true);
+    }
+  }, [location.state]);
 
   const validateForm = () => {
     let newErrors = {};
@@ -49,13 +59,26 @@ export default function PropertyOwnerLogin() {
 
     if (!res.ok) {
       setIsLoading(false);
+
+      // PENDING — redirect to pending approval page
+      if (res.status === 403 && data.status === "PENDING") {
+        localStorage.setItem("pendingOwnerEmail", data.email);
+        window.location.href = "/property-owner/pending-approval";
+        return;
+      }
+
+      // REJECTED — show dedicated rejection modal
+      if (res.status === 403 && data.status === "REJECTED") {
+        setShowRejectedModal(true);
+        return;
+      }
+
       setModalMessage(data.message || "Login failed");
       setShowModal(true);
       return;
     }
 
-    // ⏳ KEEP LOADING A BIT
-    // ✅ success
+  // ✅ success
 setTimeout(() => {
   setIsLoading(false);
 
@@ -63,10 +86,10 @@ setTimeout(() => {
   setShowModal(true);
 
   // ✅ SAVE OWNER INFO
-  localStorage.setItem("ownerId", data.owner.id);
-localStorage.setItem("ownerFullName", data.owner.fullName);
-localStorage.setItem("accommodationName", data.owner.accommodationName);
-localStorage.setItem("propertyType", data.owner.propertyType);
+  saveOwnerSession({
+    ...data.owner,
+    token: data.token || "",
+  });
 
   setTimeout(() => {
     window.location.href = "/property-owner/dashboard";
@@ -96,7 +119,7 @@ const handleGoToRegister = () => {
       <div className="admin-register-card">
         <img src={trinigoLogo} alt="TriniGo Logo" className="admin-logo" />
 
-        <h2 className="admin-register-title">Property Owner Login</h2>
+        <h2 className="admin-register-title">Establishment Owner Login</h2>
 
         {/* EMAIL */}
         <div className="admin-form-group">
@@ -189,28 +212,69 @@ const handleGoToRegister = () => {
         {/* REGISTER LINK */}
         <div className="admin-login-link">
           <span>Have you not registered yet?</span>
-          <a
-            href="#"
+          <button
+            type="button"
+            className="admin-login-link-button"
             onClick={(e) => {
-              e.preventDefault();
               handleGoToRegister();
             }}
           >
             Register
-          </a>
+          </button>
         </div>
       </div>
 
       <LoadingModal show={isLoading} text="Loading..." />
-      
+
       <MessageModal
-  show={showModal}
-  message={modalMessage}
-  onClose={() => setShowModal(false)}
-  showButton={false}
-  autoClose={true}
-  duration={1500}
-/>
+        show={showModal}
+        message={modalMessage}
+        onClose={() => setShowModal(false)}
+        showButton={false}
+        autoClose={true}
+        duration={1500}
+      />
+
+      {/* ── REJECTED ACCOUNT MODAL ── */}
+      {showRejectedModal && (
+        <div className="po-rejected-overlay">
+          <div className="po-rejected-modal">
+
+            <div className="po-rejected-icon">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </div>
+
+            <span className="po-rejected-badge">Application Rejected</span>
+
+            <h3 className="po-rejected-title">Account Not Approved</h3>
+
+            <p className="po-rejected-message">
+              We're sorry, but your property owner application has not been
+              approved by our Tourism Officer. This may be due to incomplete
+              or invalid business documents submitted during registration.
+            </p>
+
+            <div className="po-rejected-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              For assistance, please contact the TriniGo Tourism Office directly.
+            </div>
+
+            <button
+              className="po-rejected-close-btn"
+              onClick={() => setShowRejectedModal(false)}
+            >
+              Close
+            </button>
           </div>
+        </div>
+      )}
+    </div>
   );
 }

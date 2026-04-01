@@ -1,0 +1,492 @@
+/* ── EDIT ACCOMMODATION ── */
+.edit-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: 18px;
+  color: #6b7280;
+}
+
+/* Header bar */
+.edit-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.edit-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.edit-page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 2px;
+}
+.edit-page-sub {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0;
+}
+.edit-header-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.edit-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  color: #374151;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.edit-back-btn:hover { border-color: #116735; color: #116735; background: #f0fdf4; }
+
+.edit-edit-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: #116735;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.edit-edit-btn:hover { opacity: 0.88; }
+
+/* Form wrap */
+.edit-form-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 920px;
+}
+
+/* Sections */
+.edit-section {
+  background: white;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.edit-section--hero {
+  border: 1px solid #dde8e1;
+  background:
+    radial-gradient(circle at top right, rgba(76, 175, 125, 0.16), transparent 28%),
+    linear-gradient(135deg, #ffffff 0%, #f3faf5 100%);
+}
+.edit-section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f3f4f6;
+}
+.edit-section-num {
+  background: #116735;
+  color: white;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Fields */
+.edit-field {
+  margin-bottom: 16px;
+}
+.edit-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.edit-field input,
+.edit-field textarea,
+.edit-field select {
+  width: 100%;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 9px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #111;
+  background: #fafafa;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+}
+.edit-field input:focus,
+.edit-field textarea:focus,
+.edit-field select:focus {
+  border-color: #116735;
+  background: white;
+}
+.edit-field input:disabled,
+.edit-field textarea:disabled,
+.edit-field select:disabled {
+  background: #f9fafb;
+  color: #374151;
+  cursor: default;
+}
+.edit-value {
+  font-size: 15px;
+  color: #111;
+  margin: 0;
+  padding: 10px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+.edit-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Status */
+.edit-status-select {
+  max-width: 200px;
+}
+.edit-overview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.edit-status-pill {
+  margin-top: 0;
+}
+.edit-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-top: 4px;
+}
+.edit-status-badge--open  { background: #dcfce7; color: #166534; }
+.edit-status-badge--closed { background: #fee2e2; color: #991b1b; }
+.edit-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Upload button */
+.edit-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f0fdf4;
+  border: 1.5px dashed #116735;
+  color: #116735;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: background 0.15s;
+}
+.edit-upload-btn:hover { background: #dcfce7; }
+
+/* Profile preview */
+.edit-profile-preview {
+  position: relative;
+  display: inline-block;
+  margin-top: 8px;
+}
+.edit-profile-preview img {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+  border: 2px solid #e5e7eb;
+}
+
+/* Cover grid */
+.edit-cover-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+.edit-cover-thumb {
+  position: relative;
+  width: 120px;
+  height: 90px;
+}
+.edit-cover-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1.5px solid #e5e7eb;
+}
+
+/* Remove button */
+.edit-remove-img {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
+/* Room type checkboxes */
+.edit-room-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.edit-room-note,
+.edit-room-empty {
+  margin: 0 0 16px;
+  color: #6b7280;
+  line-height: 1.6;
+  font-size: 13px;
+}
+
+.edit-room-empty {
+  color: #5b6b61;
+}
+.edit-room-chips label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  background: #f9fafb;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 7px 12px;
+  transition: all 0.15s;
+}
+.edit-room-chips label:has(input:checked) {
+  background: #f0fdf4;
+  border-color: #116735;
+  color: #116735;
+}
+
+/* Room form */
+.edit-room-form {
+  background: #f9fafb;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 12px;
+}
+.edit-room-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #116735;
+  margin: 0 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.edit-room-inputs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.edit-room-field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+.edit-room-field input,
+.edit-room-field select {
+  width: 100%;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  color: #111;
+  background: white;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.15s;
+  font-family: inherit;
+}
+.edit-room-field input:focus,
+.edit-room-field select:focus { border-color: #116735; }
+.edit-room-field input:disabled,
+.edit-room-field select:disabled { background: #f9fafb; cursor: default; }
+.edit-err {
+  color: #ef4444;
+  font-size: 11px;
+  margin-top: 3px;
+  display: block;
+}
+.edit-room-img-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.edit-room-img-thumb {
+  position: relative;
+  width: 90px;
+  height: 70px;
+}
+.edit-room-img-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1.5px solid #e5e7eb;
+}
+
+/* Action buttons */
+.edit-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  position: sticky;
+  bottom: 18px;
+  z-index: 4;
+  padding: 18px 20px;
+  border-radius: 18px;
+  border: 1px solid #dfe7e2;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 18px 32px rgba(17, 24, 39, 0.08);
+  backdrop-filter: blur(12px);
+}
+.edit-cancel-btn {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  color: #374151;
+  padding: 10px 22px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.edit-cancel-btn:hover { background: #f9fafb; }
+.edit-save-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #116735;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.edit-save-btn:hover { opacity: 0.88; }
+
+/* Success modal */
+.edit-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.edit-modal {
+  background: white;
+  border-radius: 16px;
+  padding: 36px 40px;
+  text-align: center;
+  max-width: 340px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+.edit-modal-icon { font-size: 44px; margin-bottom: 12px; }
+.edit-modal h3 { font-size: 18px; font-weight: 700; color: #111; margin: 0 0 8px; }
+.edit-modal p  { font-size: 14px; color: #6b7280; margin: 0 0 20px; }
+.edit-modal button {
+  background: #116735;
+  color: white;
+  border: none;
+  padding: 10px 32px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.edit-modal button:hover { opacity: 0.88; }
+
+/* Readonly checkbox cards */
+.acm-checkbox-card--readonly { cursor: default; pointer-events: none; }
+
+@media (max-width: 700px) {
+  .edit-field-row,
+  .edit-room-inputs { grid-template-columns: 1fr; }
+  .edit-header-bar  { flex-direction: column; align-items: flex-start; }
+  .edit-overview-header { flex-direction: column; align-items: flex-start; }
+  .edit-actions {
+    position: static;
+    width: 100%;
+    padding: 16px;
+  }
+  .edit-cancel-btn,
+  .edit-save-btn,
+  .edit-header-actions,
+  .edit-header-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+}

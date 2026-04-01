@@ -13,6 +13,26 @@
   margin-bottom: 25px;
 }
 
+.property-owner-feedback {
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.property-owner-feedback--success {
+  background: #ecfdf3;
+  color: #116735;
+  border: 1px solid #b7e2c6;
+}
+
+.property-owner-feedback--error {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
 .property-owner-filter {
   background: #116735;
   margin-top: 25px;
@@ -78,13 +98,13 @@
   border: 2px solid #ef4444;
 }
 
-.property-owner-btn.approved-btn {
+.property-owner-btn.verified-btn {
   background: #116735;
   color: white;
   border: none;
 }
 
-.property-owner-btn.approved-btn:hover {
+.property-owner-btn.verified-btn:hover {
   background: #116735;
   color: white;
 }
@@ -164,7 +184,7 @@
   margin: 0;
 }
 
-.property-owner-actions .approve {
+.property-owner-actions .verify {
   background: green;
   border: none;
   color: white;
@@ -185,7 +205,7 @@
   font-weight: bold;
 }
 
-.property-owner-actions.approved-actions {
+.property-owner-actions.verified-actions {
   justify-content: space-between;
 }
 
@@ -196,8 +216,8 @@
 
 /* ===== CARD BUTTON HOVER EFFECT ===== */
 
-/* APPROVE BUTTON HOVER */
-.property-owner-actions .approve:hover {
+/* VERIFY BUTTON HOVER */
+.property-owner-actions .verify:hover {
   background: yellow;
   color: green;
 }
@@ -217,7 +237,8 @@
 /* ===== LAYOUT ===== */
 .property-owner-layout {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   background-color: #f4f6f8;
 }
 
@@ -225,6 +246,8 @@
 .property-owner-main {
   flex: 1;
   padding: 25px;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .property-owner-avatar-wrapper {
@@ -317,4 +340,45 @@
   border: none;
   padding: 10px 14px;
   border-radius: 6px;
+}
+
+.property-owner-btn.active-tab {
+  background: #0d5229;
+  color: white;
+  font-weight: 700;
+  outline: 2px solid #116735;
+}
+
+.tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  color: #ef4444;
+  font-size: 11px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  margin-left: 6px;
+}
+
+.application-date {
+  font-size: 12px;
+  color: rgba(255,255,255,0.8);
+  margin: 2px 0;
+  font-weight: normal;
+}
+
+.permit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.permit-list a {
+  color: #116735;
+  font-size: 13px;
+  text-decoration: underline;
 }

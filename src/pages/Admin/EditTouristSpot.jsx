@@ -192,14 +192,7 @@ const handleCancel = () => {
         <MenuButton onClick={() => setIsSidebarHidden(false)} />
       )}
 
-      <main
-  className="add-tourist-main"
-  onClick={() => {
-    if (!isSidebarHidden) {
-      setIsSidebarHidden(true);
-    }
-  }}
->
+      <main className="add-tourist-main">
         <div className="add-tourist-header">
           {touristSpot.name}
         </div>
