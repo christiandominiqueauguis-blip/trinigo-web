@@ -289,14 +289,14 @@ export default function TourismManagerReports() {
   return (
     <div className="property-owner-layout">
       <TourismManagerSidebar
-        active="dashboard"
+        active="reports"
         isHidden={sidebarHidden}
         setIsHidden={setSidebarHidden}
       />
 
       <main className={`tm-dashboard-main ${sidebarHidden ? "full-width" : ""}`}>
-        <section className="tm-dashboard-hero">
-          <div className="tm-dashboard-hero-copy">
+        <section className="tm-compact-toolbar">
+          <div className="tm-compact-toolbar-left">
             {sidebarHidden ? (
               <MenuButton
                 onClick={(event) => {
@@ -305,17 +305,10 @@ export default function TourismManagerReports() {
                 }}
               />
             ) : null}
-
-            <span className="tm-dashboard-kicker">Province Monitor</span>
-            <h1>Monitor report submissions and tourism activity with one province-level dashboard.</h1>
-            <p>
-              The Tourism Site Manager dashboard now reads from the backend analytics reports for live
-              summaries while keeping the existing tourist spot upload workflow available for legacy
-              document submissions.
-            </p>
+            <span className="tm-compact-kicker">Report Center</span>
           </div>
 
-          <div className="tm-dashboard-controls">
+          <div className="tm-dashboard-controls tm-dashboard-controls--inline">
             <label>
               <span>Reporting Period</span>
               <select value={period} onChange={(event) => setPeriod(event.target.value)}>

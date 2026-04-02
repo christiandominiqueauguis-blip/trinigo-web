@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../config/api";
 import LoadingModal from "../../components/LoadingModal";
 import MessageModal from "../../components/MessageModal";
+import { clearRoleSession } from "../../features/auth/roleSession";
 
 export default function TourismManagerLogin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -70,10 +71,32 @@ export default function TourismManagerLogin() {
       }
 
       // ✅ SUCCESS — save to localStorage
-      localStorage.setItem("tourismManagerFullName", data.manager.fullName);
-      localStorage.setItem("tourismManagerName", data.manager.fullName);
-      localStorage.setItem("tourismManagerId", data.manager.id);
+      const manager = data?.manager || {};
+      const managerId = String(manager.id || manager._id || "");
+      const managerName = manager.fullName || manager.username || "Tourism Site Manager";
+
+      clearRoleSession("tourismManager");
+      localStorage.setItem("tourismManagerFullName", managerName);
+      localStorage.setItem("tourismManagerName", managerName);
+      localStorage.setItem("tourismManagerUsername", manager.username || "");
+      localStorage.setItem("tourismManagerId", managerId);
       localStorage.setItem("tourismManagerAuthToken", data.token || "");
+      localStorage.setItem("tourismManagerProfile", JSON.stringify(manager));
+      if (manager.profileImage) {
+        localStorage.setItem("tourismManagerProfileImage", manager.profileImage);
+      }
+      if (manager.assignedTouristSpotId || manager.touristSpotId || manager.spotId) {
+        localStorage.setItem(
+          "tourismManagerAssignedSpotId",
+          String(manager.assignedTouristSpotId || manager.touristSpotId || manager.spotId)
+        );
+      }
+      if (manager.assignedTouristSpotName || manager.touristSpotName || manager.spotName) {
+        localStorage.setItem(
+          "tourismManagerAssignedSpotName",
+          String(manager.assignedTouristSpotName || manager.touristSpotName || manager.spotName)
+        );
+      }
 
       setIsSuccess(true);
       setModalMessage("Login successful ✅");

@@ -23,6 +23,12 @@ import AdminFeedback from "../pages/Admin/AdminFeedback";
 import Reports from "../pages/PropertyOwner/Reports";
 import AdminReport from "../pages/Admin/AdminReport";
 import TourismManagerLogin from "../pages/TourismSiteManager/TourismManagerLogin";
+import TourismManagerDashboard from "../pages/TourismSiteManager/TourismManagerDashboard";
+import TourismManagerNotifications from "../pages/TourismSiteManager/TourismManagerNotifications";
+import TourismManagerIncome from "../pages/TourismSiteManager/TourismManagerIncome";
+import TourismManagerFeedback from "../pages/TourismSiteManager/TourismManagerFeedback";
+import TourismManagerBookings from "../pages/TourismSiteManager/TourismManagerBookings";
+import TourismManagerGuests from "../pages/TourismSiteManager/TourismManagerGuests";
 import TourismManagerReports from "../pages/TourismSiteManager/TourismManagerReports";
 import EditAccommodation from "../pages/PropertyOwner/EditAccommodation";
 import AdminAccommodationDetail from "../pages/Admin/AdminAccommodationDetail";
@@ -87,7 +93,13 @@ export default function AppRoutes() {
         </Route>
 
         <Route element={<ProtectedRoute role="tourismManager" />}>
-          <Route path="/tourism-site-manager/dashboard" element={<TourismManagerReports />} />
+          <Route path="/tourism-site-manager/dashboard" element={<TourismManagerDashboard />} />
+          <Route path="/tourism-site-manager/bookings" element={<TourismManagerBookings />} />
+          <Route path="/tourism-site-manager/guests" element={<TourismManagerGuests />} />
+          <Route path="/tourism-site-manager/notifications" element={<TourismManagerNotifications />} />
+          <Route path="/tourism-site-manager/income" element={<TourismManagerIncome />} />
+          <Route path="/tourism-site-manager/feedback" element={<TourismManagerFeedback />} />
+          <Route path="/tourism-site-manager/reports" element={<TourismManagerReports />} />
         </Route>
       </Routes>
     </BrowserRouter>

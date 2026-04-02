@@ -36,8 +36,12 @@ const ROLE_CONFIG = {
       "tourismManagerId",
       "tourismManagerFullName",
       "tourismManagerName",
+      "tourismManagerUsername",
       "tourismManagerProfileImage",
       "tourismManagerAuthToken",
+      "tourismManagerAssignedSpotId",
+      "tourismManagerAssignedSpotName",
+      "tourismManagerProfile",
     ],
   },
 };
